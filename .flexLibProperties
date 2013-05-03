@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties includeAllClasses="true" version="3">
+<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
   <includeClasses>
     <classEntry path="com.twink.tools.data.DataCellMemory"/>
     <classEntry path="com.twink.tools.data.DataCell"/>
+    <classEntry path="com.twink.tools.utils.StringUtil"/>
+    <classEntry path="com.twink.tools.game.map.MapData"/>
+    <classEntry path="com.twink.tools.game.slg.map.MapGridData"/>
+    <classEntry path="com.twink.tools.game.slg.map.MapData2D"/>
+    <classEntry path="com.twink.tools.game.map.MapNodeData"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

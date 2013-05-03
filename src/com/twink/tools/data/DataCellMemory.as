@@ -3,7 +3,7 @@ package com.twink.tools.data
 	/**
 	 * 维护人：twink 2013-5-3 - 今
 	 * <p>
-	 * 
+	 * 可存储旧数据的数据单元
 	 */
 	public class DataCellMemory extends DataCell
 	{

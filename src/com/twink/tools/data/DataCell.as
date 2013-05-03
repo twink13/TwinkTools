@@ -5,14 +5,16 @@ package com.twink.tools.data
 	/**
 	 * 维护人：twink 2013-5-3 - 今
 	 * <p>
-	 * 
+	 * 数据单元
 	 */
 	public class DataCell extends Messager
 	{
+		/**
+		 * 更新事件
+		 * <p>参数: DataCell自身
+		 */		
 		public static const UPDATE:String = "UPDATE";
 		
-		//数据单元的名称 用于debug
-		private var _name:String;
 		//存储的数据
 		private var _value:*;
 		
@@ -50,6 +52,11 @@ package com.twink.tools.data
 		 */		
 		public function toString():String
 		{
+			if ( _value == null )
+			{
+				//不存在value
+				return "undefined";
+			}
 			return _value.toString();
 		}
 		

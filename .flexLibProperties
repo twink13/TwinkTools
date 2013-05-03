@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties includeAllClasses="true" useMultiPlatformConfig="false" version="3">
+<flexLibProperties includeAllClasses="true" version="3">
   <includeClasses>
-    <classEntry path="com.twink.tools.message.Messager"/>
-    <classEntry path="com.twink.tools.message.EventData"/>
+    <classEntry path="com.twink.tools.data.DataCellMemory"/>
+    <classEntry path="com.twink.tools.data.DataCell"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

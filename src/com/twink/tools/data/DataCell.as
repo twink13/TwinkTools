@@ -55,7 +55,7 @@ package com.twink.tools.data
 			if ( _value == null )
 			{
 				//不存在value
-				return "undefined";
+				return "null";
 			}
 			return _value.toString();
 		}

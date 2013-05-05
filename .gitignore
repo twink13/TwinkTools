@@ -167,3 +167,9 @@ pip-log.txt
 .actionScriptProperties
 
 *.swc
+
+.actionScriptProperties
+
+.flexLibProperties
+
+bin/TwinkTools.swc

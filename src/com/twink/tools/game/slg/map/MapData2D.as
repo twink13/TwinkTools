@@ -19,6 +19,32 @@ package com.twink.tools.game.slg.map
 		}
 		
 		//===============================================
+		//操作接口
+		//===============================================
+		
+		/**
+		 * 二维地图初始化
+		 * @param $width 地图总宽
+		 * @param $height 地图总高
+		 * 
+		 */		
+		public function setUp($width:int, $height:int):void
+		{
+			for ( var i:int = 0; i < $width; i++ )
+			{
+				for ( var j:int = 0; j < $height; j++ )
+				{
+					//x:i y:j
+					var nodeID:String = i + "_" + j;
+					var node:MapNodeData2D = new MapNodeData2D(this, nodeID);
+					node.position.setPosition(i, j);//初始化位置
+					
+					this.addNode(node);
+				}
+			}
+		}
+		
+		//===============================================
 		//getter接口
 		//===============================================
 		

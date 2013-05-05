@@ -17,38 +17,85 @@ package com.twink.tools.air.file
 	 */
 	public class FileReader extends Messager
 	{
-		//存储已下载的各种资源
+		//存储已下载的各种资源 key:url value:加载到的内容
 		private var _storageDic:Dictionary = new Dictionary();
+		//加载器列表
+		private var _loaders:Array = [];
+		//等待列表
+		private var _waitList:Array = [];
 		
 		public function FileReader()
 		{
 			super();
+			
+			for ( var i:int = 0; i < 3; i++ )
+			{
+				var loader:FileLoaderItem = new FileLoaderItem();
+				loader.addListener(FileLoaderItem.COMPLETE, onLoadComplete);
+			}
 		}
 		
-		public function read($url:String):void
+		/**
+		 * 加载一个文件
+		 * @param $url 文件完整url
+		 * @param $save 是否本地保存
+		 * 
+		 */		
+		public function read($url:String, $save:Boolean = false):void
 		{
-			var file:File = new File($url);
+			var content:* = _storageDic[$url];
+			if ( content )
+			{
+				//已经保存过了
+				this.send($url, $url, content);
+			}
 			
-			var stream:FileStream = new FileStream;
-			stream.open(file, FileMode.READ);
-			var bytes:ByteArray = new ByteArray;
-			stream.readBytes(bytes, 0, stream.bytesAvailable);
-			
-			stream.close();
-			
-			var loader:Loader;
-			loader = new Loader;
-			loader.unload();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
-			loader.loadBytes(bytes);
+			//没找到 加到等待区
+			_waitList.push([$url, $save]);
+			this.check();
 		}
 		
-		private function imageLoaded(event:Event):void
+		//检查是否有能下载的 如果有则开始加载并返回true 否则返回false
+		private function check():Boolean
 		{
-			event.target.removeEventListener(Event.COMPLETE, imageLoaded);
-			
-//			var bitmap:Bitmap = Bitmap(event.target.loader.content);
-//			result.addChild(bitmap);
+			var loadReequest:Array = _waitList.shift();
+			if ( loadReequest )
+			{
+				//存在要加载的内容
+				var loader:FileLoaderItem = this.findLoader();
+				if ( loader )
+				{
+					//找到了 开始加载
+					loader.read.apply(this, loadReequest);
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		//寻找一个能用的加载器 如果没有就返回null
+		private function findLoader():FileLoaderItem
+		{
+			var size:int = _loaders.length;
+			for ( var i:int = 0; i < size; i++ )
+			{
+				var loader:FileLoaderItem = _loaders[i];
+				if ( !loader.locked )
+				{
+					return loader;
+				}
+			}
+			return null;
+		}
+		
+		private function onLoadComplete($url:String, $content:*, $save:Boolean):void
+		{
+			if ( $save )
+			{
+				//要存
+				_storageDic[$url] = $content;
+			}
+			this.send($url, $url, $content);
 		}
 	}
 }

@@ -20,12 +20,16 @@ package com.twink.tools.air.file
 		
 		//正在加载的url
 		private var _url:String = null;
-		//已读取完毕的文件内容
-		private var _content:Object = null;
+		//指定是否存储
+		private var _save:Boolean = false;
+//		//已读取完毕的文件内容 发现这个没用...
+//		private var _content:* = null;
+		//锁状态 默认false
+		private var _locked:Boolean = false;
 		
-		//
-		private var _loade:Loader = new Loader();
-		//
+		//加载器
+		private var _loader:Loader = new Loader();
+		//加载流
 		private var _stream:FileStream = new FileStream();
 		
 		public function FileLoaderItem()
@@ -36,9 +40,16 @@ package com.twink.tools.air.file
 		//操作接口
 		//===================================================
 		
-		public function read($url:String):void
+		/**
+		 * 加载一个url
+		 * @param $url
+		 * 
+		 */		
+		public function read($url:String, $save:Boolean):void
 		{
 			this.stopRead();
+			
+			_locked = true;//状态改为锁定
 			
 			var file:File = new File($url);
 			
@@ -48,43 +59,75 @@ package com.twink.tools.air.file
 			
 			_stream.close();
 			
-			_loade.unload();
-			_loade.contentLoaderInfo.addEventListener(Event.COMPLETE, imageLoaded);
-			_loade.loadBytes(bytes);
+			_loader.unload();
+			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentLoaded);
+			_loader.loadBytes(bytes);
 		}
 		
+		/**
+		 * 停止加载
+		 * 
+		 */		
 		public function stopRead():void
 		{
-			_loade.removeEventListener(Event.COMPLETE, imageLoaded);
-			_loade.close();
+			_loader.removeEventListener(Event.COMPLETE, contentLoaded);
+			_loader.close();
 			
 			_url = null;
-			_content = null;
+			//_content = null;//改为下次加载完毕时覆盖
+			_locked = false;//状态改为非锁定
 		}
 		
 		//===================================================
 		//getter接口
 		//===================================================
 		
+		/**
+		 * 获取当前加载的url
+		 * @return 
+		 * 
+		 */		
 		public function get url():String
 		{
 			return _url;
 		}
 		
-		public function get content():Object
+//		/**
+//		 * 获取加载完毕的信息内容
+//		 * @return 
+//		 * 
+//		 */		
+//		public function get content():Object
+//		{
+//			return _content;
+//		}
+		
+		//===================================================================
+		//锁定相关操作
+		//===================================================================
+		
+		/**
+		 * 查询是否锁定了
+		 * @return 锁定状态
+		 * 
+		 */		
+		public function get locked():Boolean
 		{
-			return _content;
+			return _locked;
 		}
 		
 		//===================================================
 		//私有
 		//===================================================
 		
-		private function imageLoaded(event:Event):void
+		//加载完毕
+		private function contentLoaded(event:Event):void
 		{
-			_loade.removeEventListener(Event.COMPLETE, imageLoaded);
+			//关闭这个加载器
+			this.stopRead();
 			
-			this.send(FileLoaderItem.COMPLETE, _loade.content);
+			//此时这个加载器已经可以再次实用 但之前先派发这个消息
+			this.send(FileLoaderItem.COMPLETE, _url, _loader.content, _save);
 		}
 	}
 }

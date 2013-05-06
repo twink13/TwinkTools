@@ -47,6 +47,7 @@ package com.twink.tools.message
 			{
 				//不存在的事件名 新创建一个
 				evnetData = new EventData($eventID);
+				_eventDic[$eventID] = evnetData;
 			}
 			
 			evnetData.addListener($listener);

@@ -19,7 +19,7 @@ package com.twink.tools.air.file
 	{
 		//存储已下载的各种资源 key:url value:加载到的内容
 		private var _storageDic:Dictionary = new Dictionary();
-		//加载器列表
+		//加载器列表 
 		private var _loaders:Array = [];
 		//等待列表
 		private var _waitList:Array = [];
@@ -32,6 +32,7 @@ package com.twink.tools.air.file
 			{
 				var loader:FileLoaderItem = new FileLoaderItem();
 				loader.addListener(FileLoaderItem.COMPLETE, onLoadComplete);
+				_loaders.push(loader);
 			}
 		}
 		

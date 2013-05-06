@@ -51,7 +51,8 @@ package com.twink.tools.air.file
 			
 			_locked = true;//状态改为锁定
 			
-			var file:File = new File($url);
+			_url = $url;
+			var file:File = new File(_url);
 			
 			_stream.open(file, FileMode.READ);
 			var bytes:ByteArray = new ByteArray;
@@ -71,9 +72,9 @@ package com.twink.tools.air.file
 		public function stopRead():void
 		{
 			_loader.removeEventListener(Event.COMPLETE, contentLoaded);
-			_loader.close();
+			//_loader.close();
 			
-			_url = null;
+			//_url = null;//改为下次开始加载时覆盖
 			//_content = null;//改为下次加载完毕时覆盖
 			_locked = false;//状态改为非锁定
 		}

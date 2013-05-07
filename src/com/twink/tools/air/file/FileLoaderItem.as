@@ -9,6 +9,9 @@ package com.twink.tools.air.file
 	import flash.filesystem.FileStream;
 	import flash.utils.ByteArray;
 	import flash.utils.Dictionary;
+	
+	import mx.controls.Alert;
+
 	/**
 	 * 维护人：twink 2013-5-4 - 今
 	 * <p>
@@ -45,24 +48,41 @@ package com.twink.tools.air.file
 		 * @param $url
 		 * 
 		 */		
-		public function read($url:String, $save:Boolean):void
+		public function read($url:String, $save:Boolean, $type:String):void
 		{
 			this.stopRead();
 			
 			_locked = true;//状态改为锁定
 			
+			_save = $save;
 			_url = $url;
 			var file:File = new File(_url);
 			
 			_stream.open(file, FileMode.READ);
-			var bytes:ByteArray = new ByteArray;
-			_stream.readBytes(bytes, 0, _stream.bytesAvailable);
 			
+			switch ($type)
+			{
+				case FileReader.TYPE_UNKONWN:
+				case FileReader.TYPE_BITMAP:
+				{
+					var bytes:ByteArray = new ByteArray;
+					_stream.readBytes(bytes, 0, _stream.bytesAvailable);
+					
+					_loader.unload();
+					_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentLoaded);
+					_loader.loadBytes(bytes);
+					
+					break;
+				}
+				case FileReader.TYPE_TXT:
+				{
+					this.stopRead();
+					this.send(FileLoaderItem.COMPLETE, _url, _stream.readUTFBytes(_stream.bytesAvailable), _save);
+					
+					break;
+				}
+			}
 			_stream.close();
-			
-			_loader.unload();
-			_loader.contentLoaderInfo.addEventListener(Event.COMPLETE, contentLoaded);
-			_loader.loadBytes(bytes);
 		}
 		
 		/**

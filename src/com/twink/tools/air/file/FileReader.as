@@ -17,6 +17,10 @@ package com.twink.tools.air.file
 	 */
 	public class FileReader extends Messager
 	{
+		public static const TYPE_TXT:String = "TYPE_TXT";
+		public static const TYPE_BITMAP:String = "TYPE_BITMAP";
+		public static const TYPE_UNKONWN:String = "TYPE_UNKONWN";
+		
 		//存储已下载的各种资源 key:url value:加载到的内容
 		private var _storageDic:Dictionary = new Dictionary();
 		//加载器列表 
@@ -42,7 +46,7 @@ package com.twink.tools.air.file
 		 * @param $save 是否本地保存
 		 * 
 		 */		
-		public function read($url:String, $save:Boolean = false):void
+		public function read($url:String, $save:Boolean = false, $type:String = null):void
 		{
 			var content:* = _storageDic[$url];
 			if ( content )
@@ -51,8 +55,24 @@ package com.twink.tools.air.file
 				this.send($url, $url, content);
 			}
 			
+			if ( !$type )
+			{
+				if ( $url.indexOf(".txt") != -1 )
+				{
+					$type = FileReader.TYPE_TXT;
+				}
+				else if ( $url.indexOf(".gif") != -1 )
+				{
+					$type = FileReader.TYPE_BITMAP;
+				}
+				else
+				{
+					$type = FileReader.TYPE_UNKONWN;
+				}
+			}
+			
 			//没找到 加到等待区
-			_waitList.push([$url, $save]);
+			_waitList.push([$url, $save, $type]);
 			this.check();
 		}
 		

@@ -7,15 +7,9 @@ package com.twink.tools.data
 	 */
 	public class DataCellTags extends DataCell
 	{
-		public function DataCellTags($defaultVaule:Array = null)
+		public function DataCellTags()
 		{
-			super($defaultVaule);
-			
-			//如果为空就置成空数组
-			if ( !this.value )
-			{
-				this.value = [];
-			}
+			super([]);
 		}
 		
 		/**

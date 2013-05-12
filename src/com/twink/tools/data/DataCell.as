@@ -14,6 +14,11 @@ package com.twink.tools.data
 		 * <p>参数: DataCell自身
 		 */		
 		public static const UPDATE:String = "UPDATE";
+		/**
+		 * 数据清空事件
+		 * <p>1个参数: (this:DataCell)
+		 */		
+		public static const CLEAR:String = "CLEAR";
 		
 		//存储的数据
 		private var _value:*;
@@ -80,6 +85,16 @@ package com.twink.tools.data
 		protected function update():void
 		{
 			this.send(UPDATE, this);
+		}
+		
+		/**
+		 * 发清空和更新事件
+		 * 
+		 */		
+		protected function updateClear():void
+		{
+			this.send(CLEAR, this);
+			this.update();
 		}
 	}
 }

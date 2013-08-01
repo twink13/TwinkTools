@@ -13,6 +13,8 @@ package com.twink.tools.game.map
 		private var _parent:MapData;
 		//在map下的唯一ID
 		private var _ID:String;
+		//与这个节点相连的所有节点
+		private var _linkedNodes:Array = [];
 		
 		//地图内容
 		private var _content:IMapContent = null;
@@ -50,6 +52,16 @@ package com.twink.tools.game.map
 			_content = $value;
 		}
 		
+		/**
+		 * 增加一个连接的节点
+		 * @param $linkedNode 相连的一个节点
+		 * 
+		 */		
+		public function addLinkedNode($linkedNode:MapNodeData):void
+		{
+			_linkedNodes.push($linkedNode);
+		}
+		
 		//===============================================
 		//getter接口
 		//===============================================
@@ -82,6 +94,16 @@ package com.twink.tools.game.map
 		public function get ID():String
 		{
 			return _ID;
+		}
+		
+		/**
+		 * 获得相连的节点列表
+		 * @return 
+		 * 
+		 */		
+		public function get linkedNodes():Array
+		{
+			return _linkedNodes;
 		}
 	}
 }

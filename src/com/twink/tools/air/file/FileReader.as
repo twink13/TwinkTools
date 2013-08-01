@@ -53,6 +53,7 @@ package com.twink.tools.air.file
 			{
 				//已经保存过了
 				this.send($url, $url, content);
+				return;
 			}
 			
 			if ( !$type )
@@ -116,7 +117,7 @@ package com.twink.tools.air.file
 				//要存
 				_storageDic[$url] = $content;
 			}
-			this.send($url, $url, $content);
+			this.send($url, $content);
 		}
 	}
 }

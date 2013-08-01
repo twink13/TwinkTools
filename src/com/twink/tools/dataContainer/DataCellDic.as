@@ -168,6 +168,11 @@ package com.twink.tools.dataContainer
 		 */		
 		public function get isFull():Boolean
 		{
+			if ( this.maxCount == -1 )
+			{
+				//无限容量 所以必定未满
+				return false;
+			}
 			return (this.count >= this.maxCount);
 		}
 		
@@ -189,6 +194,17 @@ package com.twink.tools.dataContainer
 		public function get dataArrData():DataCellArr
 		{
 			return _dataArrData;
+		}
+		
+		/**
+		 * 查询是否存在这个编号对应的数据
+		 * @param $ID 对应编号
+		 * @return 
+		 * 
+		 */		
+		public function hasID($ID:String):Boolean
+		{
+			return Boolean(_dic[$ID]);
 		}
 		
 		//======================================================

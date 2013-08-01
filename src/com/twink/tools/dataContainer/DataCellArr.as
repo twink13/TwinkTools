@@ -161,6 +161,11 @@ package com.twink.tools.dataContainer
 		 */		
 		public function get isFull():Boolean
 		{
+			if ( this.maxCount == -1 )
+			{
+				//无限容量 所以必定未满
+				return false;
+			}
 			return (this.count >= this.maxCount);
 		}
 		

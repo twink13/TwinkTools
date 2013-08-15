@@ -8,6 +8,7 @@ package com.twink.tools.load
 	 */
 	import com.twink.tools.message.Messager;
 	
+	import flash.display.Bitmap;
 	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.filesystem.File;
@@ -206,7 +207,14 @@ package com.twink.tools.load
 		//加载完毕
 		private function contentLoaded(event:Event):void
 		{
-			_readerData.contentData.value = _loader.content;//图像类型
+			if ( _loader.content is Bitmap )
+			{
+				_readerData.contentData.value = (_loader.content as Bitmap).bitmapData;
+			}
+			else
+			{
+				_readerData.contentData.value = _loader.content;
+			}
 			
 			//此时这个加载器已经可以再次实用 但之前先派发这个消息
 			this.complete();

@@ -11,8 +11,10 @@ package com.twink.tools.load
 	 */
 	public class Reader extends Messager
 	{
-		//加载完成
-		public static const COMPLETE:String = "COMPLETE";
+		//单个文件加载完成
+		public static const FILE_COMPLETE:String = "FILE_COMPLETE";
+		//全部加载完成
+		public static const ALL_COMPLETE:String = "ALL_COMPLETE";
 		
 		//下载完毕的资源存储器
 		private var _lib:ILibrary = null;
@@ -97,7 +99,7 @@ package com.twink.tools.load
 		//通知外界加载完毕
 		private function alertComplete($readerData:ReaderData):void
 		{
-			this.send(ReaderItem.COMPLETE, $readerData);
+			this.send(Reader.FILE_COMPLETE, $readerData);
 			
 			//额外以url形式通知外界
 			this.send($readerData.url, $readerData);
@@ -139,13 +141,14 @@ package com.twink.tools.load
 		//尝试读取下一个文件
 		private function loadNext():void
 		{
-			var readerData:ReaderData = _waitList.dataArrData.arr[0];//第一个元素
-			
-			if ( !readerData )
+			if ( _waitList.isEmpty )
 			{
-				//等待列表为空
+				//等待列表为空 通知全部完毕
+				this.send(Reader.ALL_COMPLETE);
 				return;
 			}
+			
+			var readerData:ReaderData = _waitList.dataArrData.arr[0];//第一个元素
 			
 			var readerItem:ReaderItem = this.findReaderItem();
 			if ( !readerItem )

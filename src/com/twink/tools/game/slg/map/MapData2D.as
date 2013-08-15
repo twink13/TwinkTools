@@ -67,5 +67,34 @@ package com.twink.tools.game.slg.map
 		{
 			return _height;
 		}
+		
+		/**
+		 * 通过位置信息获得节点
+		 * @param $x
+		 * @param $y
+		 * @return 
+		 * 
+		 */		
+		public function getNodeByXY($x:int, $y:int):MapNodeData2D
+		{
+			return this.getNodeByID($x + "_" + $y) as MapNodeData2D;
+		}
+		
+		/**
+		 * 获得周边节点
+		 * @return 
+		 * 
+		 */		
+		public function getAround($x:int, $y:int):Array
+		{
+			var result:Array = [];
+			
+			result.push(this.getNodeByXY($x, $y-1));//上
+			result.push(this.getNodeByXY($x-1, $y));//左
+			result.push(this.getNodeByXY($x, $y+1));//下
+			result.push(this.getNodeByXY($x+1, $y));//右
+			
+			return result;
+		}
 	}
 }

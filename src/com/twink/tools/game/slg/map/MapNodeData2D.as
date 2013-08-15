@@ -32,5 +32,15 @@ package com.twink.tools.game.slg.map
 		{
 			return _position;
 		}
+		
+		/**
+		 * 获得周边节点
+		 * @return 
+		 * 
+		 */		
+		public function getAround():Array
+		{
+			return (this.parent as MapData2D).getAround(this.position.x, this.position.y);
+		}
 	}
 }

@@ -170,6 +170,16 @@ package com.twink.tools.dataContainer
 		}
 		
 		/**
+		 * 查询是否为空
+		 * @return 
+		 * 
+		 */		
+		public function get isEmpty():Boolean
+		{
+			return (this.count <= 0);
+		}
+		
+		/**
 		 * 查询是否存在这个信息
 		 * @param $data 要查询的信息
 		 * @return 是否存在

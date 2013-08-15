@@ -177,6 +177,16 @@ package com.twink.tools.dataContainer
 		}
 		
 		/**
+		 * 查询是否为空
+		 * @return 
+		 * 
+		 */		
+		public function get isEmpty():Boolean
+		{
+			return (this.count <= 0);
+		}
+		
+		/**
 		 * 获得ID列表信息
 		 * @return 
 		 * 

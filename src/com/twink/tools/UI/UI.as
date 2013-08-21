@@ -15,7 +15,6 @@ package com.twink.tools.UI
 	public class UI extends Messager
 	{
 		public static const STATE_CLOSE:String 			= "STATE_CLOSE";		//关闭
-		public static const STATE_WAIT_SHOW:String 		= "STATE_WAIT_SHOW";	//正在等待显示UI
 		public static const STATE_SHOWING:String 		= "STATE_SHOWING";		//正在显示
 		
 		//UI对应显示对象的存储容器
@@ -34,33 +33,20 @@ package com.twink.tools.UI
 		
 		/**
 		 * 打开UI
-		 * @param $switchOpen 为true时,若已打开则关闭,若未打开则打开
 		 * 
 		 */		
-		public function open():void
+		public function open($display:DisplayObject):void
 		{
 			if ( this.opened )
 			{
+				//已经在显示
 				return;
 			}
 			
-			//改变状态
-			_stateData.value = UI.STATE_WAIT_SHOW;
+			_displayData.value = $display;
 			
-			if ( this.display )
-			{
-				//已有资源
-				this.display.addEventListener(Event.ADDED_TO_STAGE, onAddToStage);
-				this.addUIToStage();
-			}
-			else
-			{
-				//等待获得资源
-				_displayData.addListener(DataCell.UPDATE, onGetDisplay);
-				//开始寻找资源
-				this.startFindDisplay();
-			}
-			
+			this.display.addEventListener(Event.ADDED_TO_STAGE, onAddToStage);
+			this.addUIToStage();
 		}
 		
 		/**
@@ -72,22 +58,6 @@ package com.twink.tools.UI
 			if ( this.display && this.display.parent )
 			{
 				this.display.parent.removeChild(this.display);
-			}
-		}
-		
-		/**
-		 * 开/关UI
-		 * 
-		 */		
-		public function switchOpen():void
-		{
-			if ( this.opened )
-			{
-				this.close();
-			}
-			else
-			{
-				this.open();
 			}
 		}
 		
@@ -156,23 +126,12 @@ package com.twink.tools.UI
 		}
 		
 		/**
-		 * 开始获得资源
-		 * 
-		 */		
-		protected function startFindDisplay():void
-		{
-			//默认设置一个空的容器
-			_displayData.value = new Sprite();
-		}
-		
-		/**
 		 * 将UI资源加入到显示列表中
 		 * 
 		 */		
 		protected function addUIToStage():void
 		{
-			//改变状态
-			_stateData.value = UI.STATE_SHOWING;
+			throw(new Error("请重写addUIToStage方法! this = " + this));
 		}
 		
 		//===================================================================

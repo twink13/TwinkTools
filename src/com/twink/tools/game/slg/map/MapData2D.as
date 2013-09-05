@@ -30,6 +30,9 @@ package com.twink.tools.game.slg.map
 		 */		
 		public function setUp($width:int, $height:int):void
 		{
+			_width = $width;
+			_height = $height;
+			
 			for ( var i:int = 0; i < $width; i++ )
 			{
 				for ( var j:int = 0; j < $height; j++ )

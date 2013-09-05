@@ -5,6 +5,7 @@ package com.twink.tools.UI
 	 * <p>
 	 * UI基类
 	 */
+	import com.twink.tools.component.Component;
 	import com.twink.tools.data.DataCell;
 	import com.twink.tools.message.Messager;
 	
@@ -12,13 +13,11 @@ package com.twink.tools.UI
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	public class UI extends Messager
+	public class UI extends Component
 	{
 		public static const STATE_CLOSE:String 			= "STATE_CLOSE";		//关闭
 		public static const STATE_SHOWING:String 		= "STATE_SHOWING";		//正在显示
 		
-		//UI对应显示对象的存储容器
-		private var _displayData:DataCell = new DataCell(null);
 		//当前状态
 		private var _stateData:DataCell = new DataCell(UI.STATE_CLOSE);
 		
@@ -35,18 +34,13 @@ package com.twink.tools.UI
 		 * 打开UI
 		 * 
 		 */		
-		public function open($display:DisplayObject):void
+		public function open():void
 		{
 			if ( this.opened )
 			{
 				//已经在显示
 				return;
 			}
-			
-			_displayData.value = $display;
-			
-			this.display.addEventListener(Event.ADDED_TO_STAGE, onAddToStage);
-			this.addUIToStage();
 		}
 		
 		/**
@@ -72,16 +66,6 @@ package com.twink.tools.UI
 		}
 		
 		/**
-		 * 获得关联的资源
-		 * @return 
-		 * 
-		 */		
-		public function get display():DisplayObject
-		{
-			return _displayData.value as DisplayObject;
-		}
-		
-		/**
 		 * 获得当前状态
 		 * @return 
 		 * 
@@ -95,59 +79,9 @@ package com.twink.tools.UI
 		//对内接口
 		//===================================================================
 		
-		/**
-		 * 添加UI到舞台 具体做法由继承者决定
-		 * 
-		 */		
-		protected function onAddToStage($evt:Event):void
-		{
-			//改变状态
-			_stateData.value = UI.STATE_SHOWING;
-			
-			this.display.addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
-		}
-		
-		/**
-		 * 从舞台移除
-		 * @param $evt
-		 * 
-		 */		
-		protected function onRemoveFromStage($evt:Event):void
-		{
-			//清空事件侦听
-			this.display.removeEventListener(Event.ADDED_TO_STAGE, onAddToStage);
-			this.display.removeEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
-			_displayData.removeListener(DataCell.UPDATE, onGetDisplay);
-			
-			_displayData.value = null;
-			
-			//改变状态
-			_stateData.value = UI.STATE_CLOSE;
-		}
-		
-		/**
-		 * 将UI资源加入到显示列表中
-		 * 
-		 */		
-		protected function addUIToStage():void
-		{
-			throw(new Error("请重写addUIToStage方法! this = " + this));
-		}
 		
 		//===================================================================
 		//纯私有
 		//===================================================================
-		
-		//获得显示用资源
-		private function onGetDisplay($data:DataCell):void
-		{
-			if ( this.display )
-			{
-				_displayData.removeListener(DataCell.UPDATE, onGetDisplay);
-				
-				this.display.addEventListener(Event.ADDED_TO_STAGE, onAddToStage);
-				this.addUIToStage();
-			}
-		}
 	}
 }
